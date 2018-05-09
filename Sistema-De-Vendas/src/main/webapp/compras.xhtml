@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<meta charset="UTF-8" />
+
+</h:head>
+<h:body>
+
+
+
+	<p:layout fullPage="true">
+
+		<p:layoutUnit position="north" size="150" header="Top"
+			resizable="false" closable="false" collapsible="false">
+			<h1>Selecione o Pedido</h1>
+		</p:layoutUnit>
+
+		
+
+		<p:layoutUnit position="west" size="250" header="Left"
+			resizable="true" closable="false" collapsible="false">
+			<h:form id="menu">
+				<p:menu toggleable="true">
+					<p:submenu label="Clientes">
+						<p:menuitem value="Cadastrar Cliente"
+							outcome="cadastraCliente.xhtml" />
+
+					</p:submenu>
+					<p:submenu label="Produtos">
+						<p:menuitem value="Cadastrar Produto"
+							outcome="cadastraProduto.xhtml" />
+
+						<p:menuitem value="Cadastrar Categoria"
+							outcome="cadastrarCategoria.xhtml" />
+					</p:submenu>
+					<p:submenu label="Compras" outcome="compras.xhtml">
+						<p:menuitem value="Pedidos" />
+
+					</p:submenu>
+				</p:menu>
+			</h:form>
+		</p:layoutUnit>
+
+
+		
+
+		<p:layoutUnit position="center" header="Tabela de Produtos"  resizable="true">
+
+			<h:form id="tabelaProduto">
+				
+				<p:dataTable var="pro" value="#{sistemaMB.produtos}" editable="true"
+					editMode="cell" style="margin-bottom:20px">
+
+
+
+					<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
+						update=":tabelaProduto" />
+					<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}"
+						update=":tabelaProduto" />
+
+					<p:column headerText="Codigo">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{pro.codigo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{pro.codigo}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Nome">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{pro.nome}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{pro.nome}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					
+					<p:column headerText="Preço: ">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{pro.preco}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{pro.preco}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column>
+						<p:commandButton value="Selecionar Produto"
+							action="#{sistemaMB.selecionarProduto(pro)}" />
+
+					</p:column>
+				</p:dataTable>
+				
+				<p:panelGrid columns="2">
+				<p:outputLabel value="Quantidade: "/>
+				<p:inputText value="#{sistemaMB.item.quantidade}" type="number"/>
+				
+				</p:panelGrid>
+				
+				<p:dataTable var="pro" value="#{sistemaMB.item.produtos}" editable="true"
+					editMode="cell" style="margin-bottom:20px">
+
+
+
+					<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
+						update=":tabelaProduto" />
+					<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}"
+						update=":tabelaProduto" />
+
+					<p:column headerText="Codigo">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{pro.codigo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{pro.codigo}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Nome">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{pro.nome}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{pro.nome}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					
+					<p:column headerText="Total: ">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{sistemaMB.totalItem}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{sistemaMB.totalItem}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column>
+						<p:commandButton value="Salvar Item"
+							action="#{sistemaMB.salvarItem()}" />
+
+					</p:column>
+				</p:dataTable>
+				
+				
+				<p:commandButton value="Salvar Item" action="#{sistemaMB.addItem()}" update=":formCarrinho, :tabelaProduto"/>
+			</h:form>		
+
+		</p:layoutUnit>
+		
+		<p:layoutUnit position="south" header="Carrinho"  resizable="true">
+
+			<h:form id="formCarrinho">
+
+
+				
+				<p:dataTable var="it" value="#{sistemaMB.item.produtos}" editable="false"
+					editMode="cell" style="margin-bottom:20px">
+
+
+
+					<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
+						update=":formCarrinho, :tabelaProduto" />
+					<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}"
+						update=":tabelaProduto, :formCarrinho" />
+
+					<p:column headerText="Codigo">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{it.codigo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{it.codigo}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Nome">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{it.nome}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{it.nome}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					
+					
+					
+					<p:column headerText="Total com Imposto">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{sistemaMB.totalImposto}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{sistemaMB.totalImposto}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+				
+				<p:column headerText="Excluir">
+						<p:commandButton value="Excluir" action="#{sistemaMB.removerItem(it)}" update=":tabelaProduto, :formCarrinho" />
+					</p:column>
+				
+				</p:dataTable>
+			
+				
+					
+				
+				<p:commandButton value="Salvar Pedido" action="selecionarCliente.xhtml" actionListener="#{sistemaMB.salvarPedido()}" update=":formCarrinho,:tabelaProduto"/>
+			</h:form>
+			
+			
+			
+
+		</p:layoutUnit>
+		
+	</p:layout>
+
+</h:body>
+</html>

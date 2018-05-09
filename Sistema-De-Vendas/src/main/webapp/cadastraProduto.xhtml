@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<meta charset="UTF-8" />
+
+</h:head>
+<h:body>
+
+
+
+	<p:layout fullPage="true">
+
+		<p:layoutUnit position="east" size="500"
+			header="Selecione a Categoria" resizable="true" closable="false"
+			collapsible="false" effect="drop">
+
+			<h:form id="tabelaCategoria">
+
+				<p:dataTable var="cat" value="#{sistemaMB.categorias}"
+					editable="true" editMode="cell" style="margin-bottom:20px">
+
+
+
+					<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}" />
+					<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}" />
+
+					<p:column headerText="Categoria: ">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{cat.descricao}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{pro.descricao}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+
+					<p:column headerText="Selecionar">
+						<p:commandButton value="Selecionar"
+							action="#{sistemaMB.selecionarCategoria(cat)}" />
+
+
+
+					</p:column>
+				</p:dataTable>
+				<p:button value="Cadastre a categoria"
+					outcome="cadastrarCategoria.xhtml" />
+
+			</h:form>
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="north" size="200" header="Produto"
+			resizable="true" closable="true" collapsible="true">
+			<h1>Cadastre seu Produto:</h1>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="south" size="200" header="Tabela De Produtos"
+			resizable="true" closable="false" collapsible="false">
+			<h:form id="tabelaProduto">
+
+				<p:dataTable var="pro" value="#{sistemaMB.produtos}" editable="true"
+					editMode="cell" style="margin-bottom:20px">
+
+
+
+					<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
+						update=":tabelaProduto,:produto" />
+					<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}"
+						update=":tabelaProduto,:produto" />
+
+					<p:column headerText="Codigo">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{pro.codigo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{pro.codigo}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Nome">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{pro.nome}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{pro.nome}" />
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+
+					<p:column headerText="Categoria">
+
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{pro.categoria.descricao}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{pro.categoria.descricao}" />
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+
+					<p:column headerText="Imposto:  ">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{pro.imposto2}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{pro.imposto2}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Preço: ">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{pro.preco}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{pro.preco}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+
+					<p:column headerText="Moeda ">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{pro.moeda2}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{pro.moeda2}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+
+
+
+					<p:column>
+						<p:commandButton value="Excluir"
+							action="#{sistemaMB.removerProduto(pro)}"
+							update=":tabelaProduto,:produto" />
+
+					</p:column>
+				</p:dataTable>
+
+			</h:form>
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="west" size="250" header="MENU"
+			resizable="true" closable="false" collapsible="false">
+			<h:form>
+				<p:menu toggleable="true">
+					<p:submenu label="Clientes">
+						<p:menuitem value="Cadastrar Cliente"
+							outcome="cadastraCliente.xhtml" />
+
+					</p:submenu>
+					<p:submenu label="Produtos">
+						<p:menuitem value="Cadastrar Produto"
+							outcome="cadastraProduto.xhtml" />
+						<p:menuitem value="Cadastrar Categoria"
+							outcome="cadastrarCategoria.xhtml" />
+					</p:submenu>
+					<p:submenu label="Compras">
+						<p:menuitem value="Vendas" outcome="compras.xhtml" />
+						<p:menuitem value="Carrinho" />
+					</p:submenu>
+				</p:menu>
+			</h:form>
+		</p:layoutUnit>
+
+
+
+		<p:layoutUnit position="center">
+			<h:form id="produto">
+				<p:messages showDetail="true" />
+				<p:outputLabel value="CADASTRO DO PRODUTO" />
+				<br />
+				<br />
+				<p:panelGrid columns="2">
+
+					<p:outputLabel value="Codigo: " />
+					<p:inputMask mask="99.99.99" value="#{sistemaMB.produto.codigo}"
+						required="true" requiredMessage="Campo codigo nescessario" />
+
+					<p:outputLabel value="Nome: " />
+					<p:inputText value="#{sistemaMB.produto.nome}"
+						requiredMessage="Campo nome nescessario" required="true" />
+					<p:outputLabel value="Preço: " />
+					<p:inputText value="#{sistemaMB.produto.preco}" />
+					<p:outputLabel value="É exportação?? " />
+					<p:selectBooleanCheckbox value="#{sistemaMB.produto.exportacao}" />
+
+
+				</p:panelGrid>
+
+				<p:commandButton value="Salvar"
+					action="#{sistemaMB.salvarProduto()}"
+					update=":produto,:tabelaProduto" />
+			</h:form>
+		</p:layoutUnit>
+	</p:layout>
+
+</h:body>
+</html>

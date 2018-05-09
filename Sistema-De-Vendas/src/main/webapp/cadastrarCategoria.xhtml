@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<meta charset="UTF-8" />
+
+</h:head>
+<h:body>
+
+
+
+	<p:layout fullPage="true">
+
+
+
+		<p:layoutUnit position="north" size="200" header="ABA Categoria"
+			resizable="true" closable="false" collapsible="false">
+			<h1>Cadastre a Categoria:</h1>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="south" size="200"
+			header="Tabela De Categorias" resizable="true" closable="false"
+			collapsible="false">
+			<h:form id="tabelaCategoria">
+
+				<p:dataTable var="cat" value="#{sistemaMB.categorias}"
+					editable="true" editMode="cell" style="margin-bottom:20px">
+
+
+
+					<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
+						update=":tabelaCategoria,:categoria" />
+					<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}"
+						update=":tabelaCategoria,:categoria" />
+
+					<p:column headerText="Descrição">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{cat.descricao}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{cat.descricao}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+
+
+
+					<p:column headerText="Excluir!!">
+						<p:commandButton value="Excluir"
+							action="#{sistemaMB.remover(cat)}"
+							update=":tabelaCategoria,:categoria" />
+
+					</p:column>
+				</p:dataTable>
+
+			</h:form>
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="west" size="250" header="MENU"
+			resizable="true" closable="false" collapsible="false">
+			<h:form>
+				<p:menu toggleable="true">
+					<p:submenu label="Clientes">
+						<p:menuitem value="Cadastrar Cliente"
+							outcome="cadastraCliente.xhtml" />
+
+					</p:submenu>
+					<p:submenu label="Produtos">
+						<p:menuitem value="Cadastrar Produto"
+							outcome="cadastraProduto.xhtml" />
+						<p:menuitem value="Cadastrar Categoria"
+							outcome="cadastrarCategoria.xhtml" />
+					</p:submenu>
+					<p:submenu label="Compras">
+						<p:menuitem value="Vendas" outcome="compras.xhtml" />
+						<p:menuitem value="Carrinho" />
+					</p:submenu>
+				</p:menu>
+			</h:form>
+		</p:layoutUnit>
+
+
+
+		<p:layoutUnit position="center">
+			<h:form id="categoria">
+				<p:messages showDetail="true" />
+				<p:outputLabel value="CADASTRO DA CATEGORIA" />
+				<br />
+				<br />
+				<p:messages showDetail="true" />
+				<p:panelGrid columns="2">
+
+
+					<p:outputLabel value="Descrição: " />
+					<p:inputText value="#{sistemaMB.categoria.descricao}"
+						require="true" requiredMessage="Campo obrigatorio" />
+
+
+				</p:panelGrid>
+
+				<p:commandButton value="Salvar" action="#{sistemaMB.salvarCat()}"
+					update=":categoria,:tabelaCategoria" />
+			</h:form>
+		</p:layoutUnit>
+	</p:layout>
+
+</h:body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<meta charset="UTF-8" />
+
+</h:head>
+<h:body>
+
+
+
+	<p:layout fullPage="true">
+
+		<p:layoutUnit position="north" size="150" header="Top"
+			resizable="false" closable="false" collapsible="false">
+			<h1>BEM VINDO AO DINO SHOP</h1>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="south" size="250" header="Tabela De Clientes"
+			resizable="true" closable="false" collapsible="false">
+			<h:form id="tabelaCliente">
+
+				<p:dataTable var="cli" value="#{sistemaMB.clientes}" editable="true"
+					editMode="cell" style="margin-bottom:20px">
+
+
+
+					<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
+						update=":tabelaCliente,:cliente" />
+					<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}"
+						update=":tabelaCliente,:cliente" />
+
+					<p:column headerText="Codigo">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{cli.codigo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{cli.codigo}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Nome">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{cli.nome}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{cli.nome}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Telefone">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{cli.telefone}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{cli.telefone}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Endereço">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{cli.endereco}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{cli.endereco}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+
+					<p:column headerText="Status">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{cli.status}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{cli.status}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Limite de Credito">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{cli.limiteCredito}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{cli.limiteCredito}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column>
+						<p:commandButton value="Excluir"
+							action="#{sistemaMB.remover(cli)}"
+							update=":tabelaCliente,:cliente" />
+
+					</p:column>
+				</p:dataTable>
+
+			</h:form>
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="west" size="250" header="MENU"
+			resizable="true" closable="false" collapsible="false">
+			<h:form>
+				<p:menu toggleable="true">
+					<p:submenu label="Clientes">
+						<p:menuitem value="Cadastrar Cliente"
+							outcome="cadastraCliente.xhtml" />
+
+					</p:submenu>
+					<p:submenu label="Produtos">
+						<p:menuitem value="Cadastrar Produto"
+							outcome="cadastraProduto.xhtml" />
+						<p:menuitem value="Cadastrar Categoria"
+							outcome="cadastrarCategoria.xhtml" />
+					</p:submenu>
+					<p:submenu label="Compras">
+						<p:menuitem value="Vendas" outcome="compras.xhtml" />
+						<p:menuitem value="Carrinho" />
+					</p:submenu>
+				</p:menu>
+			</h:form>
+		</p:layoutUnit>
+
+
+
+		<p:layoutUnit position="center">
+			<h:form id="cliente" var="aux">
+				<p:messages showDetail="true" />
+				<p:outputLabel value="CADASTRO DO CLIENTE" />
+				<br />
+				<br />
+				<p:panelGrid columns="2">
+
+					<p:outputLabel value="Codigo: " />
+					<p:inputMask mask="99.99.99" value="#{sistemaMB.cliente.codigo}"
+						required="true" requiredMessage="Campo codigo nescessario" />
+
+					<p:outputLabel value="Nome: " />
+					<p:inputText value="#{sistemaMB.cliente.nome}"
+						requiredMessage="Campo Nome nescessario" required="true" />
+					<p:outputLabel value="Endereco: " />
+					<p:inputText value="#{sistemaMB.cliente.endereco}" required="true"
+						requiredMessage="Campo endereço nescessario" />
+
+					<p:outputLabel value="Telefone: " />
+					<p:inputMask mask="(99) 99999-9999"
+						value="#{sistemaMB.cliente.telefone}" required="true"
+						requiredMessage="Campo telefone nescessario" />
+
+					<p:outputLabel value="Status" />
+					<p:selectOneMenu value="#{sistemaMB.cliente.status}">
+						<f:selectItem itemLabel="Bom" itemValue="Bom" />
+						<f:selectItem itemLabel="Medio" itemValue="Medio" />
+						<f:selectItem itemLabel="Ruim" itemValue="Ruim" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Limite de Credido: " />
+					<p:inputText value="#{sistemaMB.cliente.limiteCredito}"
+						required="true"
+						requiredMessage="Campo Limite de Credito nescessario" />
+
+
+
+
+				</p:panelGrid>
+
+				<p:commandButton value="Salvar"
+					action="#{sistemaMB.salvarCliente()}"
+					update=":cliente,:tabelaCliente" />
+			</h:form>
+		</p:layoutUnit>
+	</p:layout>
+
+</h:body>
+</html>
